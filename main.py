@@ -14,19 +14,39 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+import logging
+import os
+
 from google.appengine.ext import webapp
 from google.appengine.ext.webapp import util
+from google.appengine.ext.webapp import template
 
+
+from pagespeed import get_results
 
 class MainHandler(webapp.RequestHandler):
     def get(self):
+    	logging.debug("Hello")
         self.response.out.write('Hello world!')
+
+        speed = get_results()
+
+        context = {
+        	'front': speed[0],
+        	'football': speed[1]
+        }
+
+        path = os.path.join(os.path.dirname(__file__), 'templates/loaded.html')
+        self.response.out.write(template.render(path, context))
+
+
+
 
 
 def main():
-    application = webapp.WSGIApplication([('/', MainHandler)],
-                                         debug=True)
-    util.run_wsgi_app(application)
+	logging.getLogger().setLevel(logging.DEBUG)
+	application = webapp.WSGIApplication([('/', MainHandler)], debug=True)
+	util.run_wsgi_app(application)
 
 
 if __name__ == '__main__':
