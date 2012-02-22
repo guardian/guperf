@@ -1,52 +1,81 @@
 #!/usr/bin/env python
-#
-# Copyright 2007 Google Inc.
-#
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
-#
-#     http://www.apache.org/licenses/LICENSE-2.0
-#
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
-#
+
 import logging
 import os
+import yaml
+import datetime
+import json
 
 from google.appengine.ext import webapp
 from google.appengine.ext.webapp import util
 from google.appengine.ext.webapp import template
 
+import models
+from pagespeed import PageSpeedRequest
 
-from pagespeed import get_results
-
-class MainHandler(webapp.RequestHandler):
+class LoadHandler(webapp.RequestHandler):
+    """
+    - Load data for list of URLs.
+    - For each URL create new test entry in db.
+    - Pull out data we are specifically interested in, but stash entire JSON response as well.
+    - Add load_type field. Was this a daily load query, or a manual request.
+    """
     def get(self):
-    	logging.debug("Hello")
-        self.response.out.write('Hello world!')
+        urls = yaml.load(open('urls_to_test.yaml','r').read())
 
-        speed = get_results()
+        auto = self.request.get("auto", False)
+        if auto is not False:
+            auto = True
 
-        context = {
-        	'front': speed[0],
-        	'football': speed[1]
-        }
+        logging.debug(auto)
+
+        requests = {}
+        context = {}
+
+        # Ping off a bunch of async requests.
+        for id in urls:
+            requests[id] = PageSpeedRequest(urls[id])
+
+        for id in requests:
+            result = requests[id].get_result()
+
+            pageload = models.PageLoad(
+                id=id,
+                dt=datetime.datetime.now(),
+                auto=auto,
+                result=json.dumps(result))
+            pageload.put()
+
+            context[id] = result
 
         path = os.path.join(os.path.dirname(__file__), 'templates/loaded.html')
         self.response.out.write(template.render(path, context))
 
 
+class DashboardHandler(webapp.RequestHandler):
+    """
+    - Get latest data from db for each test URL, pass to template.
+    """
+    def get(self):
 
+        urls = yaml.load(open('urls_to_test.yaml','r').read())
+        logging.debug(urls)
+        context = {}
+        
+        for id in urls:
+            q = models.PageLoad.all()
+            p = q.filter('id =', id).order('dt').fetch(1)[0]
+            context[id] = json.loads(p.result)
 
+        logging.debug(context)
+
+        path = os.path.join(os.path.dirname(__file__), 'templates/dashboard.html')
+        self.response.out.write(template.render(path, context))
 
 def main():
-	logging.getLogger().setLevel(logging.DEBUG)
-	application = webapp.WSGIApplication([('/', MainHandler)], debug=True)
-	util.run_wsgi_app(application)
+    logging.getLogger().setLevel(logging.DEBUG)
+    application = webapp.WSGIApplication([('/', DashboardHandler), ('/load', LoadHandler)], debug=True)
+    util.run_wsgi_app(application)
 
 
 if __name__ == '__main__':
