@@ -1,34 +1,49 @@
-<!DOCTYPE html>
-<html>
-<head>
-	<title>Dashboard</title>
-	<link rel="stylesheet" type="text/css" href="c/bootstrap.min.css">
-	<link rel="stylesheet" type="text/css" href="c/bootstrap-responsive.min.css">
-</head>
-<body>
+{% extends "base.html" %}
+
+{% block content %}
 
 <h1>Results loaded</h1>
 
 
-<h2>Network Front</h2>
+<div class="alert alert-info">
+	<p>New data has been loaded. Visit the <a href="/">dashboard</a> for the latest results.</p>
+</div>
 
-<p>New data has been loaded. You should go checkout the <a href="/">dashboard</a></p>
+{% for result in google_results %}
+<div class="alert alert-success">
+	<h4>{{ result.name }}</h4>
+	<p><small><a href="{{ result.id }}">{{ result.id }}</a></small></p>
+	<ul class="unstyled">
 
-<dl>
-	<dt>Overall score</dt>
-	<dd>{{ front.score }}</dd>
-	<dt>Total JS Assets</dt>
-	<dd>{{ front.pageStats.numberJsResources }}</dd>
-</dd>
+		{% ifequal result.responseCode 200 %}
+		<li>Response: <span class="label label-success">{{ result.responseCode }}</span></li>
+		{% else %}
+		<li>Response: <span class="label label-success">{{ result.responseCode }}</span></li>
+		{% endifequal %}
 
-<h2>Football</h2>
+		<li>Score: <strong>{{ result.score }}</strong></li>
 
-<dl>
-	<dt>Overall score</dt>
-	<dd>{{ football.score }}</dd>
-	<dt>Total JS Assets</dt>
-	<dd>{{ football.pageStats.numberJsResources }}</dd>
-</dd>
+	</ul>
+</div>
+{% endfor %}
+
+{% for result in wpt_results %}
+<div class="alert alert-success">
+	<h4>{{ result.id }}</h4>
+	<p><small><a href="{{ result.id }}">{{ result.id }}</a></small></p>
+	<ul class="unstyled">
+
+		{% ifequal result.responseCode 200 %}
+		<li>Response: <span class="label label-success">{{ result.responseCode }}</span></li>
+		{% else %}
+		<li>Response: <span class="label label-success">{{ result.responseCode }}</span></li>
+		{% endifequal %}
+
+	</ul>
+</div>
+{% endfor %}
 
 </body>
 </html>
+
+{% endblock %}

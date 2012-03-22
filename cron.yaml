@@ -1,0 +1,4 @@
+cron:
+- description: Daily Google stats
+  url: /load?auto=true
+  schedule: every 24 hours

@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h1>Test Log</h1>
+<ol class="unstyled">
+	{% for test in tests %}
+	<li><strong>{{ test.id }}</strong> {% if test.auto %}(daily monitoring){% endif %}<br />
+		<small>{{ test.dt }}</small>
+	</li>
+	{% endfor %}
+</ol>
+<p class="alert alert-info">Only showing last 100 tests. See the real logs in app engine for more.</p>
+</body>
+</html>
+
+{% endblock %}

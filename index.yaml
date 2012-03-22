@@ -10,6 +10,26 @@ indexes:
 # automatically uploaded to the admin console when you next deploy
 # your application using appcfg.py.
 
+- kind: GooglePageLoad
+  properties:
+  - name: auto
+  - name: id
+  - name: dt
+    direction: desc
+
+- kind: GooglePageLoad
+  properties:
+  - name: id
+  - name: dt
+    direction: desc
+
+- kind: PageLoad
+  properties:
+  - name: auto
+  - name: id
+  - name: dt
+    direction: desc
+
 - kind: PageLoad
   properties:
   - name: id
@@ -25,3 +45,16 @@ indexes:
   properties:
   - name: id=
   - name: dt
+
+- kind: WptTestResult
+  properties:
+  - name: auto
+  - name: id
+  - name: dt
+    direction: desc
+
+- kind: WptTestResult
+  properties:
+  - name: id
+  - name: dt
+    direction: desc
