@@ -14,11 +14,14 @@ handlers:
 - url: /j
   static_dir: j
 
-- url: /img
-  static_dir: img
+- url: /images
+  static_dir: images
 
 - url: /static
   static_dir: static
+
+- url: /
+  script: dashboard.py
 
 - url: .*
   script: main.py

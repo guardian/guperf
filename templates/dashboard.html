@@ -20,9 +20,6 @@
             <p><small><a href="{{ page.url }}">{{ page.url }}</a></small></p>
             
             <p><strong>PLT 1:</strong> {{ page.wpt.data.average.firstView.loadTime }}s <strong style="margin-left: 10px;">PLT 2:</strong> {{ page.wpt.data.average.repeatView.loadTime }}s<br /><strong>Google score:</strong> {{ page.google.score }}/100<br /></p>
-            <div class="progress">
-                <div class="bar" style="width: {{ page.google.score }}%;"></div>
-            </div>
             </div>
             <style>
                 .chart { height: 170px !important;}
@@ -37,9 +34,6 @@
                     <div class="tab-pane" id="{{ page.id }}-gps">
                         <div class="chart chart_g{{ forloop.counter }}"></div>
                         <table class="table table-striped table-bordered table-condensed">
-                            <thead data-toggle="collapse" data-target=".stats-body">
-                                <tr><th colspan="2">Google Page Speed</th></tr>
-                            </thead>
                             <tbody class="collpase in stats-body">
                                 <tr><td>Total resources</td><td>{{ page.google.pageStats.numberResources }}</td></tr>
                                 <tr><td>Total JS resources</td><td>{{ page.google.pageStats.numberJsResources }}</td></tr>
@@ -54,25 +48,19 @@
                     <div class="tab-pane active" id="{{ page.id }}-wpt">
                         <div class="chart chart_wpt{{ forloop.counter }}"></div>
                         <table class="table table-striped table-bordered table-condensed">
-                            <thead data-toggle="collapse" data-target=".stats-body">
-                                <tr><th colspan="2">WebpageTest</th></tr>
-                            </thead>
                             <tbody class="collpase in stats-body">
                                 <tr><td>Page load time 1</td><td>{{ page.wpt.data.average.firstView.loadTime }}s</td></tr>
                                 <tr><td>Page load time 2</td><td>{{ page.wpt.data.average.repeatView.loadTime }}s</td></tr>
                                 <tr><td>Render time 1</td><td>{{ page.wpt.data.average.firstView.render }}s</td></tr>
                                 <tr><td>Render time 2</td><td>{{ page.wpt.data.average.repeatView.render }}s</td></tr>
-                                <tr><td><a href="{{ page.wpt.data.runs.0.firstView.images.waterfall }}">View waterfall</a></td><td></td></tr>
-                                <tr><td><a href="{{ page.wpt.data.runs.0.firstView.images.connectionView }}">View connections</a></td><td></td></tr>
-                                <tr><td><a href="{{ page.wpt.data.runs.0.firstView.images.checklist }}">View checklist</a></td><td></td></tr>
+                                <tr><td><a class="lightbox" href="{{ page.wpt.data.runs.0.firstView.images.waterfall }}">View waterfall</a></td><td></td></tr>
+                                <tr><td><a class="lightbox" href="{{ page.wpt.data.runs.0.firstView.images.connectionView }}">View connections</a></td><td></td></tr>
+                                <tr><td><a class="lightbox" href="{{ page.wpt.data.runs.0.firstView.images.checklist }}">View checklist</a></td><td></td></tr>
                             </tbody>
                         </table>
                     </div><!-- /.tab-pane#2 -->
                     <div class="tab-pane" id="{{ page.id }}-fix">
                         <table class="table table-striped table-bordered table-condensed">
-                            <thead>
-                                <tr><th colspan="2">Fix next</th></tr>
-                            </thead>
                             {% for rule in page.rules_by_impact %}
                             <tr><td>{{ rule.name }}</td><td>{{ rule.impact }}</td></tr>
                             {% endfor %}

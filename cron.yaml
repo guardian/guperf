@@ -1,4 +1,7 @@
 cron:
 - description: Daily Google stats
-  url: /load?auto=true
-  schedule: every 24 hours
+  url: /load?auto=1
+  schedule: every day 00:00
+- description: Get WPT results
+  url: /results?auto=1
+  schedule: every day 01:00
