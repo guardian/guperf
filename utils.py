@@ -2,6 +2,14 @@ import yaml
 import yaml.constructor
 from xml.dom import minidom
 
+try:
+    # included in standard lib from Python 2.7
+    from collections import OrderedDict
+except ImportError:
+    # try importing the backported drop-in replacement
+    # it's available on PyPI
+    from ordereddict import OrderedDict
+
 def xml_to_json(result):
 
     result = result.replace("\n", "")
@@ -27,20 +35,12 @@ def xml_to_json(result):
 
     data = parse_xml(xml.getElementsByTagName('response')[0])
 
-    data['data']['average']['firstView']['loadTime'] = round(float(data['data']['average']['firstView']['loadTime']) / 1000, 1)
-    data['data']['average']['repeatView']['loadTime'] = round(float(data['data']['average']['repeatView']['loadTime']) / 1000, 1)
-    data['data']['average']['firstView']['render'] = round(float(data['data']['average']['firstView']['render']) / 1000, 1)
-    data['data']['average']['repeatView']['render'] = round(float(data['data']['average']['repeatView']['render']) / 1000, 1)
+    data['data']['median']['firstView']['loadTime'] = round(float(data['data']['median']['firstView']['loadTime']) / 1000, 1)
+    data['data']['median']['repeatView']['loadTime'] = round(float(data['data']['median']['repeatView']['loadTime']) / 1000, 1)
+    data['data']['median']['firstView']['render'] = round(float(data['data']['median']['firstView']['render']) / 1000, 1)
+    data['data']['median']['repeatView']['render'] = round(float(data['data']['median']['repeatView']['render']) / 1000, 1)
 
     return data
-
-try:
-    # included in standard lib from Python 2.7
-    from collections import OrderedDict
-except ImportError:
-    # try importing the backported drop-in replacement
-    # it's available on PyPI
-    from ordereddict import OrderedDict
 
 class OrderedDictYAMLLoader(yaml.Loader):
     """
@@ -77,3 +77,6 @@ class OrderedDictYAMLLoader(yaml.Loader):
             value = self.construct_object(value_node, deep=deep)
             mapping[key] = value
         return mapping
+
+def get_urls():
+    return yaml.load(open('urls_to_test.yaml','r').read(), OrderedDictYAMLLoader)

@@ -46,6 +46,38 @@ indexes:
   - name: id=
   - name: dt
 
+- kind: TestResult
+  properties:
+  - name: auto
+  - name: provider
+  - name: results_received
+  - name: url
+  - name: dt
+    direction: desc
+
+- kind: TestResult
+  properties:
+  - name: auto
+  - name: provider
+  - name: url
+  - name: dt
+    direction: desc
+
+- kind: TestResult
+  properties:
+  - name: provider
+  - name: results_received
+  - name: url
+  - name: dt
+    direction: desc
+
+- kind: TestResult
+  properties:
+  - name: provider
+  - name: url
+  - name: dt
+    direction: desc
+
 - kind: WptTestResult
   properties:
   - name: auto

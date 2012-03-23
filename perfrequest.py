@@ -7,7 +7,6 @@ from xml.dom import minidom
 
 import settings
 
-
 class PerfRequest(object):
 
 	def __init__(self, url_to_test=None):
@@ -36,8 +35,6 @@ class PerfRequest(object):
 			logging.debug("Not HTTP 200")
 
 
-
-
 class GooglePerfRequest(PerfRequest):
 
 	def build_url(self):
@@ -50,20 +47,17 @@ class GooglePerfRequest(PerfRequest):
 class WptTestRunRequest(PerfRequest):
 
 	def build_url(self):
-
-		return '%s?url=%s&k=%s&private=1&f=xml&runs=5&location=London_Chrome.DSL' % (settings.wpt_url, self.url_to_test, settings.wpt_api_key)
+		return '%s?url=%s&k=%s&private=1&f=xml&runs=5&location=London_Chrome.DSL&noimages=1' % (settings.wpt_url, self.url_to_test, settings.wpt_api_key)
 		#return 'http://localhost:8888/runtest.xml'
 
 
 class WptTestResultsRequest(PerfRequest):
 
 	def __init__(self, test_id):
-
 		self.test_id = test_id
 		super(WptTestResultsRequest, self).__init__()
 
 	def build_url(self):
-
 		return '%s/%s/' % (settings.wpt_results_url, self.test_id)
 		#return 'http://localhost:8888/101110_BCKV/result.xml'
 
