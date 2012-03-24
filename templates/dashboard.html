@@ -18,7 +18,7 @@
         <div class="span6">
             <div class="alert alert-info">
             <h2>{{ page.google.name }}</h2>
-            <p><small><a href="{{ page.url }}">{{ page.google.url }}</a></small></p>
+            <p><small><a href="{{ page.google.url }}">{{ page.google.url }}</a></small></p>
             
             <p><strong>PLT 1:</strong> {{ page.wpt.current.result.data.median.firstView.loadTime }}s <strong style="margin-left: 10px;">PLT 2:</strong> {{ page.wpt.current.result.data.median.repeatView.loadTime }}s<br /><strong>Google score:</strong> {{ page.google.current.result.score }}/100<br /></p>
             </div>
@@ -27,12 +27,12 @@
             </style>
             <div class="tabbable">
                 <ul class="nav nav-tabs">
-                    <li class="active"><a href="#{{ page.id }}-wpt" data-toggle="tab">WebpageTest</a></li>
-                    <li><a href="#{{ page.id }}-gps" data-toggle="tab">Google Page Speed</a></li>
-                    <li><a href="#{{ page.id }}-fix" data-toggle="tab">Fix next</a></li>
+                    <li class="active"><a href="#{{ page.google.id }}-wpt" data-toggle="tab">WebpageTest</a></li>
+                    <li><a href="#{{ page.google.id }}-gps" data-toggle="tab">Google Page Speed</a></li>
+                    <li><a href="#{{ page.google.id }}-fix" data-toggle="tab">Fix next</a></li>
                 </ul>
                 <div class="tab-content">
-                    <div class="tab-pane" id="{{ page.id }}-gps">
+                    <div class="tab-pane" id="{{ page.google.id }}-gps">
                         <div class="chart chart_g{{ forloop.counter }}"></div>
                         <table class="table table-striped table-bordered table-condensed" style="margin-top:30px;">
                             <tbody class="collpase in stats-body">
@@ -46,7 +46,7 @@
                             </tbody>
                         </table>
                     </div><!-- /.tab-pane#1 -->
-                    <div class="tab-pane active" id="{{ page.id }}-wpt">
+                    <div class="tab-pane active" id="{{ page.google.id }}-wpt">
                         <div class="chart chart_wpt{{ forloop.counter }}"></div>
                         <table class="table table-striped table-bordered table-condensed">
                             <tbody class="collpase in stats-body">
@@ -60,7 +60,7 @@
                             </tbody>
                         </table>
                     </div><!-- /.tab-pane#2 -->
-                    <div class="tab-pane" id="{{ page.id }}-fix">
+                    <div class="tab-pane" id="{{ page.google.id }}-fix">
                         <table class="table table-striped table-bordered table-condensed">
                             {% for rule in page.google.rules_by_impact %}
                             <tr><td>{{ rule.name }}</td><td>{{ rule.impact }}</td></tr>
