@@ -69,6 +69,13 @@ indexes:
   - name: results_received
   - name: url
   - name: dt
+
+- kind: TestResult
+  properties:
+  - name: provider
+  - name: results_received
+  - name: url
+  - name: dt
     direction: desc
 
 - kind: TestResult
