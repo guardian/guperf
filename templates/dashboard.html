@@ -17,8 +17,8 @@
         {% endifequal %}
         <div class="span6">
             <div class="alert alert-info">
-            <h2>{{ page.name }}</h2>
-            <p><small><a href="{{ page.url }}">{{ page.url }}</a></small></p>
+            <h2>{{ page.google.name }}</h2>
+            <p><small><a href="{{ page.url }}">{{ page.google.url }}</a></small></p>
             
             <p><strong>PLT 1:</strong> {{ page.wpt.current.result.data.median.firstView.loadTime }}s <strong style="margin-left: 10px;">PLT 2:</strong> {{ page.wpt.current.result.data.median.repeatView.loadTime }}s<br /><strong>Google score:</strong> {{ page.google.current.result.score }}/100<br /></p>
             </div>

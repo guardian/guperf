@@ -1,16 +1,13 @@
 
 import logging
 import os
-import yaml
 
 from google.appengine.ext import webapp
-from google.appengine.ext.webapp import util
 from google.appengine.ext.webapp import template
-from django.utils import simplejson as json
 
 import models
 from utils import xml_to_json, get_urls
-from testresult import GoogleResultData, WptResultData, NoDataError
+from perftest.results import GoogleResultData, WptResultData, NoDataError
 
 class DashboardHandler(webapp.RequestHandler):
 
@@ -35,14 +32,4 @@ class DashboardHandler(webapp.RequestHandler):
 
             context['results'].append(result)
 
-        path = os.path.join(os.path.dirname(__file__), 'templates/dashboard.html')
-        self.response.out.write(template.render(path, context))
-
-def main():
-    logging.getLogger().setLevel(logging.DEBUG)
-    application = webapp.WSGIApplication([
-        ('/', DashboardHandler)], debug=True)
-    util.run_wsgi_app(application)
-
-if __name__ == '__main__':
-    main()
+        self.response.out.write(template.render('templates/dashboard.html', context))

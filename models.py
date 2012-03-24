@@ -12,6 +12,3 @@ class TestResult(db.Expando):
 	# If we have to poll for test results
 	results_received = db.BooleanProperty()
 	provider_id = db.StringProperty()
-
-	def to_dict(self):
-		return dict([(p, unicode(getattr(self, p))) for p in self.properties()])

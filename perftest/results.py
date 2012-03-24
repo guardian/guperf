@@ -23,7 +23,7 @@ class ResultData(object):
         if len(self.tests) < 1:
             raise NoDataError
 
-        self.url = url
+        self.name = url
         self.provider = provider
 
         self.tests = self.parse_raw_result_data()
@@ -48,6 +48,7 @@ class GoogleResultData(ResultData):
     def __init__(self, url):
         super(GoogleResultData, self).__init__(url, 'google')
         self.rules_by_impact = self.get_rules_by_impact()
+        self.url = self.current.result['id']
 
     def parse_raw_result_data(self):
         parsed = []
