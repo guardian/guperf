@@ -1,1 +1,4 @@
 *.pyc
+
+# A place to store settings I don't want public.
+mysettings.py
