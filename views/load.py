@@ -30,8 +30,6 @@ class LoadHandler(webapp.RequestHandler):
             logging.info("Making wpt testrun request for %s" % url)
             requests[url] = WptTestRunRequest(urls[url])
 
-        pass
-
         for url in requests:
             result = {}
             xml = requests[url].get_response()
