@@ -47,7 +47,8 @@ class GooglePerfRequest(PerfRequest):
 class WptTestRunRequest(PerfRequest):
 
 	def build_url(self):
-		return '%s?url=%s&k=%s&private=1&f=xml&runs=5&location=London_Chrome.DSL&noimages=1' % (settings.wpt_url, self.url_to_test, settings.wpt_api_key)
+		return '%s?url=%s&k=%s&private=1&f=xml&runs=%s&location=%s.%s&noimages=1' % (settings.wpt_url, self.url_to_test,
+			settings.wpt_api_key, settings.wpt_runs, settings.wpt_location, settings.wpt_connectivity)
 		#return 'http://localhost:8888/runtest.xml'
 
 
