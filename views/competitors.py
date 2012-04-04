@@ -6,15 +6,15 @@ from google.appengine.ext import webapp
 from google.appengine.ext.webapp import template
 
 import models
-from utils import get_urls
+from utils import get_urls, get_competitor_urls
 from perftest.results import GoogleResultData, WptResultData, NoDataError
 
-class DashboardHandler(webapp.RequestHandler):
+class CompetitorsHandler(webapp.RequestHandler):
 
     def get(self):
 
         results = []
-        for url in get_urls():
+        for url in get_competitor_urls():
             logging.debug(url)
             try:
                 result = {
@@ -27,4 +27,4 @@ class DashboardHandler(webapp.RequestHandler):
 
             results.append(result)
 
-        self.response.out.write(template.render('templates/dashboard.html', {'results': results}))
+        self.response.out.write(template.render('templates/competitors.html', {'results': results}))

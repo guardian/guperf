@@ -80,3 +80,6 @@ class OrderedDictYAMLLoader(yaml.Loader):
 
 def get_urls():
     return yaml.load(open('urls_to_test.yaml','r').read(), OrderedDictYAMLLoader)
+
+def get_competitor_urls():
+    return yaml.load(open('competitor_urls.yaml','r').read(), OrderedDictYAMLLoader)
