@@ -21,15 +21,15 @@ class StatusHandler(webapp.RequestHandler):
 
         for url in get_urls():
             try:
-            	#google = GoogleResultData(url)
-                wpt = WptResultData(url)
+            	#google = GoogleResultData(url, 1)
+                wpt = WptResultData(url, 1)
                 response['metrics'].extend(
                 	self.build_metric_json(
                 		url,
-                		wpt.tests[0].result['data']['median']['firstView']['loadTime'],
-                		wpt.tests[0].result['data']['median']['repeatView']['loadTime'],
-                		wpt.tests[0].result['data']['median']['firstView']['render'],
-                		wpt.tests[0].result['data']['median']['repeatView']['render']
+                		wpt.current.result['data']['median']['firstView']['loadTime'],
+                		wpt.current.result['data']['median']['repeatView']['loadTime'],
+                		wpt.current.result['data']['median']['firstView']['render'],
+                		wpt.current.result['data']['median']['repeatView']['render']
                 	)
                 )
 

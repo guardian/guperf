@@ -11,14 +11,14 @@ class NoDataError(Exception):
 
 class ResultData(object):
 
-    def __init__(self, url, provider):
+    def __init__(self, url, provider, count):
 
         # Query for last 10 days of results.
         q = models.TestResult.all()
         q.filter('url =', url).filter('provider =', provider).filter('results_received', True)
         q.filter('dt >', date.today() - timedelta(days=10))
         q.order('dt')
-        self.tests = q.fetch(20)
+        self.tests = q.fetch(count)
 
         if len(self.tests) < 1:
             raise NoDataError
@@ -46,8 +46,8 @@ class ResultData(object):
 
 class GoogleResultData(ResultData):
 
-    def __init__(self, url):
-        super(GoogleResultData, self).__init__(url, 'google')
+    def __init__(self, url, count=10):
+        super(GoogleResultData, self).__init__(url, 'google', count)
         self.rules_by_impact = self.get_rules_by_impact()
         self.url = self.current.result['id']
 
@@ -69,8 +69,8 @@ class GoogleResultData(ResultData):
 
 class WptResultData(ResultData):
 
-    def __init__(self, url):
-        super(WptResultData, self).__init__(url, 'wpt')
+    def __init__(self, url, count=10):
+        super(WptResultData, self).__init__(url, 'wpt', count)
 
     def parse_raw_result_data(self):
         parsed = []
