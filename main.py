@@ -5,6 +5,7 @@ import logging
 from views.load import LoadHandler, CompetitorLoadHandler, ResultsHandler, LogHandler
 from views.dashboard import DashboardHandler
 from views.competitors import CompetitorsHandler
+from views.management import StatusHandler
 
 from google.appengine.ext import webapp
 from google.appengine.ext.webapp import util
@@ -18,6 +19,7 @@ def main():
         ('/results', ResultsHandler),
         ('/log', LogHandler),
         ('/colleagues', CompetitorsHandler),
+        ('/management/status', StatusHandler),
         ('/', DashboardHandler)
     ], debug=True)
     util.run_wsgi_app(application)
