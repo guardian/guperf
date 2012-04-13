@@ -17,7 +17,7 @@ class ResultData(object):
         q = models.TestResult.all()
         q.filter('url =', url).filter('provider =', provider).filter('results_received', True)
         q.filter('dt >', date.today() - timedelta(days=10))
-        q.order('dt')
+        q.order('-dt')
         self.tests = q.fetch(count)
 
         if len(self.tests) < 1:
@@ -29,7 +29,7 @@ class ResultData(object):
 
         self.tests = self.parse_raw_result_data()
         self.history = self.get_test_history(self.tests)
-        self.current = self.tests[-1]
+        self.current = self.tests[0]
     
     def parse_raw_result_data(self, results):
         return results
@@ -42,7 +42,7 @@ class ResultData(object):
         for test in tests:
             if history == [] or test.dt.date() != history[-1].dt.date():
                 history.append(test)
-        return history
+        return reversed(history)
 
 class GoogleResultData(ResultData):
 
