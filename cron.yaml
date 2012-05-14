@@ -2,9 +2,9 @@ cron:
 - description: Daily tests
   url: /load?auto=1
   schedule: every day 00:00
-- description: Daily competitor tests
-  url: /colleagues-load?auto=1
-  schedule: every day 00:05
+#- description: Daily competitor tests
+#  url: /colleagues-load?auto=1
+#  schedule: every day 00:05
 - description: Get WPT results
   url: /results?auto=1
   schedule: every day 01:00
