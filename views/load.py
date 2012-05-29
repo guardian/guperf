@@ -4,6 +4,7 @@ import logging
 
 from google.appengine.ext import webapp
 from google.appengine.ext.webapp import template
+from google.appengine.api import memcache
 
 import models
 from perftest.requests import GooglePerfRequest, WptTestRunRequest, WptTestResultsRequest
@@ -55,5 +56,8 @@ class ResultsHandler(webapp.RequestHandler):
     def get(self):
 
         results = get_wpt_results()
+
+        # Just bulk kill the cache.
+        memcache.flush_all()
 
         self.response.out.write("Worked" + str(dir(results)))
