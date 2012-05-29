@@ -18,6 +18,7 @@ class PerfRequest(object):
 
 		self.rpc = urlfetch.create_rpc(deadline=20) # 20s timeout, pagespeed API can take a little while.
 		urlfetch.make_fetch_call(self.rpc, url)
+		logging.debug('calling %s' % url)
 
 	def build_url(self):
 		# Must be implemented by subclass.
@@ -47,8 +48,8 @@ class GooglePerfRequest(PerfRequest):
 class WptTestRunRequest(PerfRequest):
 
 	def build_url(self):
-		return '%s?url=%s&k=%s&private=1&f=xml&runs=%s&location=%s.%s&noimages=1' % (settings.wpt_url, self.url_to_test,
-			settings.wpt_api_key, settings.wpt_runs, settings.wpt_location, settings.wpt_connectivity)
+		return '%s?url=%s&private=1&f=xml&runs=%s&location=%s.%s&noimages=1' % (settings.wpt_url, self.url_to_test,
+			settings.wpt_runs, settings.wpt_location, settings.wpt_connectivity)
 		#return 'http://localhost:8888/runtest.xml'
 
 
@@ -59,6 +60,6 @@ class WptTestResultsRequest(PerfRequest):
 		super(WptTestResultsRequest, self).__init__()
 
 	def build_url(self):
-		return '%s/%s/' % (settings.wpt_results_url, self.test_id)
+		return '%s?test=%s' % (settings.wpt_results_url, self.test_id)
 		#return 'http://localhost:8888/101110_BCKV/result.xml'
 

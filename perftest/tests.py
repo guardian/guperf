@@ -52,6 +52,7 @@ def get_wpt_results():
         xml = requests[url].get_response()
         if xml is not None:
             if xml.getElementsByTagName('statusCode')[0].childNodes[0].data == '200':
+                logging.debug('we got a good result for %s' % url)
                 unfulfilled_test_runs = models.TestResult.all().filter('results_received =', False).filter('provider =' ,'wpt')
                 testrun = unfulfilled_test_runs.filter('url =', url).fetch(1)[0]
                 testrun.result = xml.toxml()
