@@ -8,3 +8,6 @@ cron:
 - description: Get WPT results
   url: /results?auto=1
   schedule: every day 01:00
+- description: Prime dashboard cache
+  url: /?auto=1
+  schedule: every day 01:30
