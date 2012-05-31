@@ -1,0 +1,101 @@
+{% extends "base.html" %}
+{% block title %}URL Admin{% endblock %} 
+
+{% block content %}
+
+<style>
+.form-horizontal .controls {
+	margin-left: 90px;
+}
+.form-horizontal .control-label {
+	width: 80px;
+}
+.form-horizontal input[type="submit"] {
+	padding-left: 10px;
+	padding-right: 10px;
+}
+table form {
+	margin: 0;
+}
+.error {
+	color: red;
+}
+
+</style>
+
+<h2>URLs currently in test</h2>
+<table class="table table-striped table-bordered" style="margin-top: 10px;">
+<thead>
+	<tr><th>Name</th><th>URL</th><th>Dashboard</th><th>Delete</th></tr>
+</thead>
+<tbody>
+{% for url in urls %}
+<tr>
+	<td>{{ url.name }}</td>
+	<td><a href="http://{{ url.url }}">{{ url.url }}</a></td>
+	<td>{{ url.dashboard }}</td>
+	<td>
+		<form method="post" action="/admin/urls">
+			<i class="icon-trash"></i>
+			<input type="hidden" name="method" value="delete"><!-- Yay, HTTP --> 
+			<input type="hidden" name="key" value="{{ url.key }}" />
+			<input type="submit" value="Delete" class="btn btn-mini" />
+		</form>
+	</td>
+</tr>
+{% endfor %}
+</tbody>
+</table>
+
+{% ifequal error 'badvalue' %}
+<p class="error">All fields are required.</p>
+{% endifequal %}
+{% ifequal error '200' %}
+<p class="error">Bad URL. Make sure you entered a URL that returns a HTTP 200 code, ie. no redirects, and is on the public internet.</p>
+{% endifequal %}
+
+<h3>Add new URL</h3>
+<form method="post" action="/admin/urls" class="form-horizontal" style="margin-top: 10px;">
+	<div class="control-group">
+		<label class="control-label" for="f-name">Name:</label>
+		<div class="controls">
+			<input type="text" name="name" id="f-name" placeholder="Guardian Network Front" />
+		</div>
+	</div>
+	<div class="control-group">
+		<label class="control-label" for="f-url">URL:</label>
+		<div class="controls">
+			<input type="text" name="url" id="f-url" placeholder="www.guardian.co.uk" /> 
+		</div>
+	</div>
+	<div class="control-group">
+		<label class="control-label" for="f-url">Dashboard:</label>
+		<div class="controls">
+			<select name="dashboard">
+				<option value="main">Main</option>
+				<option value="beta">Beta</option>
+				<option value="mobile">Mobile</option>
+			</select>
+			<p class="help-block">Which dashboard do you want to the URL to appear on</p>
+		</div>
+	</div>
+	<div class="control-group">
+		<div class="controls">
+			<input type="submit" value="Add" class="btn btn-primary" />
+		</div>
+	</div>
+</form>
+
+</body>
+</html>
+
+{% endblock %}
+
+
+<div class="control-group">
+      <label class="control-label" for="input01">Text input</label>
+      <div class="controls">
+        <input type="text" class="input-xlarge" id="input01">
+        <p class="help-block">Supporting help text</p>
+      </div>
+    </div>

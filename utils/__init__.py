@@ -1,3 +1,7 @@
+import httplib
+from urlparse import urlparse
+import logging
+
 import yaml
 import yaml.constructor
 from xml.dom import minidom
@@ -9,6 +13,17 @@ except ImportError:
     # try importing the backported drop-in replacement
     # it's available on PyPI
     from ordereddict import OrderedDict
+
+def check_http_200(url):
+
+    parsed_url = urlparse(url)
+
+    try:
+        conn = httplib.HTTPConnection(parsed_url.netloc)
+        conn.request("HEAD", parsed_url.path)
+        return conn.getresponse().status == 200
+    except:
+        return False
 
 def xml_to_json(result):
 

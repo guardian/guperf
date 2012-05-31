@@ -6,5 +6,5 @@ wpt_runs = 5
 wpt_location = "ec2-eu-west-1a-IE9"
 wpt_connectivity = "DSL"
 
-google_api_key = '[your_key_here]'
-wpt_api_key = '[your_key_here]'
+google_api_key = 'AIzaSyAjyFYyl2LF107vTUyszMx0nNdtkSrQwHQ'
+wpt_api_key = 'dbc65c0b98354c97820a619d27f3ba6d'
