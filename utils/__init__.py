@@ -6,6 +6,8 @@ import yaml
 import yaml.constructor
 from xml.dom import minidom
 
+import models
+
 try:
     # included in standard lib from Python 2.7
     from collections import OrderedDict
@@ -94,6 +96,7 @@ class OrderedDictYAMLLoader(yaml.Loader):
         return mapping
 
 def get_urls():
+    return models.Url.all()
     return yaml.load(open('urls_to_test.yaml','r').read(), OrderedDictYAMLLoader)
 
 def get_beta_urls():

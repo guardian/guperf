@@ -19,15 +19,15 @@ class DashboardHandler(webapp.RequestHandler):
 
             results = []
             for url in get_urls():
-                logging.debug(url)
+                logging.debug(url.url)
                 try:
                     result = {
-                        'google': GoogleResultData(url),
-                        'wpt': WptResultData(url)
+                        'google': GoogleResultData(url.url),
+                        'wpt': WptResultData(url.url)
                     }
 
                 except NoDataError:
-                    logging.info("There are no full results yet for %s" % url)
+                    logging.info("There are no full results yet for %s" % url.url)
                     continue
 
                 results.append(result)
@@ -47,15 +47,15 @@ class BetaDashboardHandler(webapp.RequestHandler):
 
             results = []
             for url in get_beta_urls():
-                logging.debug(url)
+                logging.debug(url.url)
                 try:
                     result = {
-                        'google': GoogleResultData(url),
-                        'wpt': WptResultData(url)
+                        'google': GoogleResultData(url.url),
+                        'wpt': WptResultData(url.url)
                     }
 
                 except NoDataError:
-                    logging.info("There are no full results yet for %s" % url)
+                    logging.info("There are no full results yet for %s" % url.url)
                     continue
 
                 results.append(result)

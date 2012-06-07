@@ -13,8 +13,8 @@ def do_wpt_tests(urls, auto=False):
 
     # Ping off a bunch of async requests.
     for url in urls:
-        logging.info("Making wpt testrun request for %s" % url)
-        requests[url] = WptTestRunRequest(urls[url])
+        logging.info("Making wpt testrun request for %s" % url.url)
+        requests[url.url] = WptTestRunRequest(url.url)
 
     for url in requests:
         result = {}
@@ -72,8 +72,8 @@ def do_google_tests(urls, auto=False):
 
     # Ping off a bunch of async requests.
     for url in urls:
-        logging.info("Making google request for %s" % url)
-        requests[url] = GooglePerfRequest(urls[url])
+        logging.info("Making google request for %s" % url.url)
+        requests[url.url] = GooglePerfRequest(url.url)
 
     for url in requests:
         result = requests[url].get_response()

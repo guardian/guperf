@@ -26,14 +26,15 @@ table form {
 <h2>URLs currently in test</h2>
 <table class="table table-striped table-bordered" style="margin-top: 10px;">
 <thead>
-	<tr><th>Name</th><th>URL</th><th>Dashboard</th><th>Delete</th></tr>
+	<tr><th>Name</th><th>URL</th><th>Dashboard</th><th>Tests run</th><th>Delete</th></tr>
 </thead>
 <tbody>
 {% for url in urls %}
 <tr>
 	<td>{{ url.name }}</td>
-	<td><a href="http://{{ url.url }}">{{ url.url }}</a></td>
+	<td><a href="{{ url.url }}">{{ url.url }}</a></td>
 	<td>{{ url.dashboard }}</td>
+	<td>{{ url.tests_run }}</td>
 	<td>
 		<form method="post" action="/admin/urls">
 			<i class="icon-trash"></i>
