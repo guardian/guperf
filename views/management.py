@@ -6,7 +6,6 @@ from google.appengine.ext import webapp
 from django.utils import simplejson as json
 
 import models
-from utils import get_urls, get_beta_urls
 from perftest.results import GoogleResultData, WptResultData, NoDataError
 
 class StatusHandler(webapp.RequestHandler):
@@ -19,7 +18,7 @@ class StatusHandler(webapp.RequestHandler):
 			"metrics": []
 		}
 
-        for url in get_urls():
+        for url in models.Url.all():
             try:
             	#google = GoogleResultData(url, 1)
                 wpt = WptResultData(url, 1)

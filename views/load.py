@@ -9,7 +9,6 @@ from google.appengine.api import memcache
 import models
 from perftest.requests import GooglePerfRequest, WptTestRunRequest, WptTestResultsRequest
 from perftest.tests import do_wpt_tests, get_wpt_results, do_google_tests
-from utils import get_urls, get_competitor_urls
 
 class LoadHandler(webapp.RequestHandler):
 
@@ -21,7 +20,7 @@ class LoadHandler(webapp.RequestHandler):
 
     def get(self):
 
-        urls = get_urls()
+        urls = models.Url.all()
         
         context = {
             'google_results': do_google_tests(urls, self.is_auto()),

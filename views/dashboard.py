@@ -7,7 +7,6 @@ from google.appengine.ext.webapp import template
 from google.appengine.api import memcache
 
 import models
-from utils import get_urls, get_beta_urls
 from perftest.results import GoogleResultData, WptResultData, NoDataError
 
 class DashboardHandler(webapp.RequestHandler):
@@ -18,7 +17,7 @@ class DashboardHandler(webapp.RequestHandler):
         if not t:
 
             results = []
-            for url in get_urls():
+            for url in models.Url.all():
                 logging.debug(url.url)
                 try:
                     result = {

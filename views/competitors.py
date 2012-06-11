@@ -6,7 +6,6 @@ from google.appengine.ext import webapp
 from google.appengine.ext.webapp import template
 
 import models
-from utils import get_urls, get_competitor_urls
 from perftest.results import GoogleResultData, WptResultData, NoDataError
 
 class CompetitorsHandler(webapp.RequestHandler):
