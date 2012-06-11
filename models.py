@@ -21,3 +21,4 @@ class Url(db.Expando):
 class UrlTestTask(db.Expando):
 	name = db.StringProperty()
 	url = db.StringProperty()
+	dt = db.DateTimeProperty()

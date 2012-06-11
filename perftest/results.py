@@ -23,7 +23,7 @@ class ResultData(object):
         if len(self.tests) < 1:
             raise NoDataError
 
-        self.name = url
+        self.url = url
         self.id = url.replace(' ', '-')
         self.provider = provider
 

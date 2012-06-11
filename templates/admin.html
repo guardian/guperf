@@ -48,6 +48,9 @@ table form {
 </tbody>
 </table>
 
+<div class="row">
+<div class="span6">
+
 {% ifequal error 'badvalue' %}
 <p class="error">All fields are required.</p>
 {% endifequal %}
@@ -87,16 +90,32 @@ table form {
 	</div>
 </form>
 
+</div>
+<div class="span6">
+<!--<h3>Add new Dashboard</h3>
+<form method="post" action="/admin/urls" class="form-horizontal" style="margin-top: 10px;">
+	<div class="control-group">
+		<label class="control-label" for="f-dashboard-name">Name:</label>
+		<div class="controls">
+			<input type="text" name="dashboard-name" id="f-dashboard-name" placeholder="Discussion" />
+		</div>
+	</div>
+	<div class="control-group">
+		<label class="control-label" for="f-dashboard-id">ID:</label>
+		<div class="controls">
+			<input type="text" name="dashboard-id" id="f-dashboard-id" placeholder="discussion" /> 
+		</div>
+	</div>
+	<div class="control-group">
+		<div class="controls">
+			<input type="submit" value="Add" class="btn btn-primary" />
+		</div>
+	</div>
+</form>-->
+
+</div>
+
 </body>
 </html>
 
 {% endblock %}
-
-
-<div class="control-group">
-      <label class="control-label" for="input01">Text input</label>
-      <div class="controls">
-        <input type="text" class="input-xlarge" id="input01">
-        <p class="help-block">Supporting help text</p>
-      </div>
-    </div>

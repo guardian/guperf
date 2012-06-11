@@ -28,7 +28,7 @@ def do_wpt_tests(urls, auto=False):
                 auto = auto,
                 results_received = False,
                 provider_id = xml.getElementsByTagName('testId')[0].childNodes[0].data,
-                # Store the XML. You never know.
+                # Store the XML.
                 result = xml.toxml())
             testrun.put()
 
@@ -38,7 +38,7 @@ def do_wpt_tests(urls, auto=False):
 
 def get_wpt_results():
 
-    unfulfilled_test_runs = models.TestResult.all().filter('results_received =', False).filter('provider =' ,'wpt')
+    unfulfilled_test_runs = models.TestResult.all().filter('results_received =', False).filter('provider =' ,'wpt')[:4]
 
     requests = {}
     results = []

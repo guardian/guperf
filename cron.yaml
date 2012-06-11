@@ -1,13 +1,16 @@
 cron:
-- description: Daily tests
-  url: /load?auto=1
+- description: Queue up daily tests
+  url: /schedule?auto=1
   schedule: every day 00:00
-#- description: Daily competitor tests
-#  url: /colleagues-load?auto=1
-#  schedule: every day 00:05
+
+- description: Check queue and run job
+  url: /dojob?auto=1
+  schedule: every 1 minutes from 00:01 to 00:31
+
 - description: Get WPT results
   url: /results?auto=1
-  schedule: every day 01:00
+  schedule: every 1 minutes from 02:00 to 02:31
+
 - description: Prime dashboard cache
   url: /?auto=1
-  schedule: every day 01:30
+  schedule: every day 03:00

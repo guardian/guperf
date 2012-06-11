@@ -17,12 +17,14 @@ class DashboardHandler(webapp.RequestHandler):
         if not t:
 
             results = []
-            for url in models.Url.all():
+            for url in models.Url.all().order('-dashboard'):
                 logging.debug(url.url)
                 try:
                     result = {
                         'google': GoogleResultData(url.url),
-                        'wpt': WptResultData(url.url)
+                        'wpt': WptResultData(url.url),
+                        'name': url.name,
+                        'url': url.url
                     }
 
                 except NoDataError:
@@ -45,12 +47,14 @@ class BetaDashboardHandler(webapp.RequestHandler):
         if not t:
 
             results = []
-            for url in get_beta_urls():
+            for url in models.Url.all().filter('dashboard =', 'beta'):
                 logging.debug(url.url)
                 try:
                     result = {
                         'google': GoogleResultData(url.url),
-                        'wpt': WptResultData(url.url)
+                        'wpt': WptResultData(url.url),
+                        'name': url.name,
+                        'url': url.url
                     }
 
                 except NoDataError:

@@ -10,7 +10,19 @@ import models
 from perftest.requests import GooglePerfRequest, WptTestRunRequest, WptTestResultsRequest
 from perftest.tests import do_wpt_tests, get_wpt_results, do_google_tests
 
-class LoadHandler(webapp.RequestHandler):
+class ScheduleHandler(webapp.RequestHandler):
+
+    def get(self):
+        # Schedule all the URLs for test.
+        urls = models.Url.all()
+        for url in urls:
+            test = models.UrlTestTask(url=url.url, name=url.name)
+            test.put()
+
+        self.response.out.write('%s new jobs scheduled' % str(urls.count()))
+        self.response.out.write('<br>%s total jobs in the queue' % str(models.UrlTestTask.all().count()))
+
+class JobHandler(webapp.RequestHandler):
 
     def is_auto(self):
         auto = self.request.get('auto', False)
@@ -20,27 +32,20 @@ class LoadHandler(webapp.RequestHandler):
 
     def get(self):
 
-        urls = models.Url.all()
-        
-        context = {
-            'google_results': do_google_tests(urls, self.is_auto()),
-            'wpt_results': do_wpt_tests(urls, self.is_auto())
-        }
+        urls = models.UrlTestTask.all().order('-dt')[:2]
 
-        self.response.out.write(template.render('templates/loaded.html', context))
+        if (len(urls) > 0):    
+            context = {
+                'google_results': do_google_tests(urls, self.is_auto()),
+                'wpt_results': do_wpt_tests(urls, self.is_auto())
+            }
 
-class CompetitorLoadHandler(LoadHandler):
+            self.response.out.write(template.render('templates/loaded.html', context))
+            for url in urls:
+                url.delete()
 
-    def get(self):
-
-        urls = get_competitor_urls()
-        
-        context = {
-            'google_results': do_google_tests(urls, self.is_auto()),
-            'wpt_results': do_wpt_tests(urls, self.is_auto())
-        }
-
-        self.response.out.write(template.render('templates/loaded.html', context))
+        else:
+            self.response.out.write('no jobs to run')
 
 class LogHandler(webapp.RequestHandler):
     def get(self):
