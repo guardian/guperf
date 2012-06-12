@@ -22,3 +22,7 @@ class UrlTestTask(db.Expando):
 	name = db.StringProperty()
 	url = db.StringProperty()
 	dt = db.DateTimeProperty()
+
+class Dashboard(db.Expando):
+	name = db.StringProperty(required=True)
+	id = db.StringProperty(required=True)

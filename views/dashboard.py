@@ -11,13 +11,16 @@ from perftest.results import GoogleResultData, WptResultData, NoDataError
 
 class DashboardHandler(webapp.RequestHandler):
 
-    def get(self):
+    def get(self, dashboard="main"):
 
-        t = memcache.get("dashboard_html")
+        t = memcache.get("%s_dashboard_html" % dashboard)
+
         if not t:
-
             results = []
-            for url in models.Url.all().order('-dashboard'):
+            urls = models.Url.all().filter('dashboard =', dashboard).order('-dashboard')
+            if urls.count() < 1:
+                self.redirect('/dashboard')
+            for url in urls:
                 logging.debug(url.url)
                 try:
                     result = {
@@ -34,38 +37,13 @@ class DashboardHandler(webapp.RequestHandler):
                 results.append(result)
 
             # Cache the template until we flush the cache on new results.
-            t = template.render('templates/dashboard.html', {'results': results})
-            memcache.set("dashboard_html", t)
-
-        self.response.out.write(t)
-
-class BetaDashboardHandler(webapp.RequestHandler):
-
-    def get(self):
-
-        t = memcache.get("beta_dashboard_html")
-        if not t:
-
-            results = []
-            for url in models.Url.all().filter('dashboard =', 'beta'):
-                logging.debug(url.url)
-                try:
-                    result = {
-                        'google': GoogleResultData(url.url),
-                        'wpt': WptResultData(url.url),
-                        'name': url.name,
-                        'url': url.url
-                    }
-
-                except NoDataError:
-                    logging.info("There are no full results yet for %s" % url.url)
-                    continue
-
-                results.append(result)
-
-            # Cache the template until we flush the cache on new results.
-            t = template.render('templates/beta_dashboard.html', {'results': results})
-            memcache.set("beta_dashboard_html", t)
+            try:
+                logging.debug('trying')
+                t = template.render('templates/dashboard/%s.html' % dashboard, {'results': results})
+            #except TemplateDoesNotExist:
+            except:
+                t = template.render('templates/dashboard/default.html', {'results': results})
+            #memcache.set("%s_dashboard_html" % dashboard, t)
 
         self.response.out.write(t)
 

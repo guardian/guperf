@@ -26,5 +26,8 @@ handlers:
 - url: /admin/.*
   script: admin_router.py
 
+- url: /dashboard/.*
+  script: dashboard_router.py
+
 - url: .*
   script: main_router.py

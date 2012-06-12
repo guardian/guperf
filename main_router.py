@@ -3,7 +3,7 @@
 import logging
 
 from views.load import ScheduleHandler, JobHandler, ResultsHandler, LogHandler
-from views.dashboard import DashboardHandler, BetaDashboardHandler
+from views.dashboard import DashboardHandler
 from views.management import StatusHandler, BetaStatusHandler
 
 from google.appengine.ext import webapp
@@ -19,7 +19,7 @@ def main():
         ('/log', LogHandler),
         ('/management/status', StatusHandler),
         ('/beta/management/status', BetaStatusHandler),
-        ('/beta', BetaDashboardHandler),
+        ('/dashboard', DashboardHandler),
         ('/', DashboardHandler),
     ], debug=True)
     util.run_wsgi_app(application)

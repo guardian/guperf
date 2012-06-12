@@ -15,9 +15,13 @@ class AdminHandler(webapp.RequestHandler):
 
     def get(self):
 
-        urls = models.Url.all()
+        context = {
+            'urls': models.Url.all(),
+            'dashboards': models.Dashboard.all(),
+            'error': self.request.get('e')
+        }
 
-        self.response.out.write(template.render('templates/admin.html', {'urls': urls, 'error': self.request.get('e')}))
+        self.response.out.write(template.render('templates/admin.html', context))
 
     def post(self):
 
@@ -26,26 +30,47 @@ class AdminHandler(webapp.RequestHandler):
 
         else:
 
-            urls = models.Url.all()
+            context = {
+                'urls': models.Url.all(),
+                'dashboards': models.Dashboard.all(),
+                'adding': self.request.get('model'),
+                'fields': {
+                    'name': self.request.get('name'),
+                    'url': self.request.get('url'),
+                    'dashboard': self.request.get('dashboard'),
+                    'dashboardname': self.request.get('dashboard-name'),
+                    'dashboardid': self.request.get('dashboard-id')
+                }
+            }
 
-            link = 'http://' + self.request.get('url').replace('http://', '')
+            if context['adding'] == 'url':
 
-            if check_http_200(link):
-                    logging.debug(self.request.get('dashboard'))
-                    logging.debug(self.request.get('name'))
-                    logging.debug(link)
-                    url = models.Url(
-                        name=self.request.get('name'),
-                        url=link,
-                        dashboard=self.request.get('dashboard'))
-                    url.put()
+                link = 'http://' + self.request.get('url').replace('http://', '')
 
+                if check_http_200(link):
+                    try:
+                        url = models.Url(
+                            name=self.request.get('name'),
+                            url=link,
+                            dashboard=self.request.get('dashboard'))
+                        url.put()
+                        self.redirect('/admin/urls')
+                    except BadValueError:
+                        context['error'] = "BadValueError"
+                else:
+                    context['error'] = '200'
+
+            elif context['adding'] == 'dashboard':
+                try:
+                    dashboard = models.Dashboard(
+                                name=self.request.get('dashboard-name'),
+                                id=self.request.get('dashboard-id'))
+                    dashboard.put()
                     self.redirect('/admin/urls')
-
-
-
-            else:
-                self.response.out.write(template.render('templates/admin.html', {'urls': urls, 'error': '200'}))
+                except BadValueError:
+                    context['error'] = "BadValueError"
+            
+            self.response.out.write(template.render('templates/admin.html', context))
 
 
     def delete(self):

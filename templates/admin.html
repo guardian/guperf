@@ -51,40 +51,42 @@ table form {
 <div class="row">
 <div class="span6">
 
-{% ifequal error 'badvalue' %}
+<h3>Add new URL</h3>
+{% ifequal adding 'url' %}
+{% ifequal error 'BadValueError' %}
 <p class="error">All fields are required.</p>
 {% endifequal %}
 {% ifequal error '200' %}
 <p class="error">Bad URL. Make sure you entered a URL that returns a HTTP 200 code, ie. no redirects, and is on the public internet.</p>
 {% endifequal %}
-
-<h3>Add new URL</h3>
+{% endifequal %}
 <form method="post" action="/admin/urls" class="form-horizontal" style="margin-top: 10px;">
 	<div class="control-group">
 		<label class="control-label" for="f-name">Name:</label>
 		<div class="controls">
-			<input type="text" name="name" id="f-name" placeholder="Guardian Network Front" />
+			<input type="text" name="name" id="f-name" placeholder="Guardian Network Front" value="{{ fields.name }}" />
 		</div>
 	</div>
 	<div class="control-group">
 		<label class="control-label" for="f-url">URL:</label>
 		<div class="controls">
-			<input type="text" name="url" id="f-url" placeholder="www.guardian.co.uk" /> 
+			<input type="text" name="url" id="f-url" placeholder="www.guardian.co.uk" value="{{ fields.url }}" /> 
 		</div>
 	</div>
 	<div class="control-group">
 		<label class="control-label" for="f-url">Dashboard:</label>
 		<div class="controls">
 			<select name="dashboard">
-				<option value="main">Main</option>
-				<option value="beta">Beta</option>
-				<option value="mobile">Mobile</option>
+				{% for dashboard in dashboards %}
+				<option value="{{ dashboard.id }}"{% ifequal dashboard.id fields.dashboard %} selected="selected"{%endifequal %}>{{ dashboard.name }}</option>
+				{% endfor %}
 			</select>
 			<p class="help-block">Which dashboard do you want to the URL to appear on</p>
 		</div>
 	</div>
 	<div class="control-group">
 		<div class="controls">
+			<input type="hidden" name="model" value="url" />
 			<input type="submit" value="Add" class="btn btn-primary" />
 		</div>
 	</div>
@@ -92,26 +94,32 @@ table form {
 
 </div>
 <div class="span6">
-<!--<h3>Add new Dashboard</h3>
+<h3>Add new Dashboard</h3>
+{% ifequal adding 'dashboard' %}
+{% ifequal error 'BadValueError' %}
+<p class="error">All fields are required.</p>
+{% endifequal %}
+{% endifequal %}
 <form method="post" action="/admin/urls" class="form-horizontal" style="margin-top: 10px;">
 	<div class="control-group">
 		<label class="control-label" for="f-dashboard-name">Name:</label>
 		<div class="controls">
-			<input type="text" name="dashboard-name" id="f-dashboard-name" placeholder="Discussion" />
+			<input type="text" name="dashboard-name" id="f-dashboard-name" placeholder="Discussion" value="{{ fields.dashboardname }}" />
 		</div>
 	</div>
 	<div class="control-group">
 		<label class="control-label" for="f-dashboard-id">ID:</label>
 		<div class="controls">
-			<input type="text" name="dashboard-id" id="f-dashboard-id" placeholder="discussion" /> 
+			<input type="text" name="dashboard-id" id="f-dashboard-id" placeholder="discussion" value="{{ fields.dashboardid }}" /> 
 		</div>
 	</div>
 	<div class="control-group">
 		<div class="controls">
+			<input type="hidden" name="model" value="dashboard" />
 			<input type="submit" value="Add" class="btn btn-primary" />
 		</div>
 	</div>
-</form>-->
+</form>
 
 </div>
 
