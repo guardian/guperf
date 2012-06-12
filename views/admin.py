@@ -13,6 +13,21 @@ from google.appengine.api.datastore_errors import BadValueError
 import models
 from utils import check_http_200, get_messages, add_message
 
+class StatusHandler(webapp.RequestHandler):
+
+    def get(self):
+        
+        context = {
+            'total_urls': models.Url.all().count(),
+            'jobs_in_queue': models.UrlTestTask.all().count(),
+            'tests_awaiting_results': models.TestResult.all().filter('results_received =', False).count(),
+            'total_tests': models.TestResult.all().count(),
+            'dashboards': models.Dashboard.all(),
+        }
+
+        self.response.out.write(template.render('templates/admin/status.html', context))
+
+
 
 class AdminHandler(webapp.RequestHandler):
 
@@ -25,7 +40,7 @@ class AdminHandler(webapp.RequestHandler):
             'messages': get_messages()
         }
 
-        self.response.out.write(template.render('templates/admin.html', context))
+        self.response.out.write(template.render('templates/admin/urls.html', context))
 
     def post(self):
 
@@ -81,7 +96,7 @@ class AdminHandler(webapp.RequestHandler):
             context['messages'] = get_messages()
             logging.debug(context['messages'])
     
-            self.response.out.write(template.render('templates/admin.html', context))
+            self.response.out.write(template.render('templates/admin/urls.html', context))
 
 
     def delete(self):

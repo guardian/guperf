@@ -1,0 +1,27 @@
+{% extends "../base.html" %}
+{% block title %}Status{% endblock %} 
+
+{% block content %}
+
+<h2>Job queue stats</h2>
+<table class="table table-striped table-bordered" style="margin-top: 10px;">
+<tbody>
+<tr><td>Jobs in test queue</td><td>{{ jobs_in_queue }}</td></tr>
+<tr><td>WPT tests awaiting results</td><td>{{ tests_awaiting_results }}</td></tr>
+</tbody>
+</table>
+
+<h2>Total status</h2>
+<table class="table table-striped table-bordered" style="margin-top: 10px;">
+<tbody>
+<tr><td>Total test URLS</td><td>{{ total_urls }}</td></tr>
+<tr><td>Total tests completed</td><td>{{ total_tests }}</td></tr>
+</tbody>
+</table>
+
+
+
+</body>
+</html>
+
+{% endblock %}
