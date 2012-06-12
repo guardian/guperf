@@ -1,16 +1,34 @@
 cron:
+
+
+
+# Every 5 minutes check the task queue for jobs 
+# and WPT tests with no results.
+- description: Rolling task checker
+  url: /dojob?auto=1
+  schedule: every 5 minutes
+
+- description: Rolling get WPT results
+  url: /results?auto=1
+  schedule: every 5 minutes
+
+
+
+
+# Every night, schedule all the current tests, 
+# and speed up task queue checks for a while.
 - description: Queue up daily tests
   url: /schedule?auto=1
   schedule: every day 00:00
 
-- description: Check queue and run job
+- description: Nightly fast task checker
   url: /dojob?auto=1
   schedule: every 1 minutes from 00:01 to 00:31
 
-- description: Get WPT results
-  url: /results?auto=1
-  schedule: every 1 minutes from 02:00 to 02:31
 
+
+
+# Prime the cache of the main dashboard
 - description: Prime dashboard cache
   url: /?auto=1
   schedule: every day 03:00

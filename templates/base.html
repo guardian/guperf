@@ -13,9 +13,15 @@
     	<div class="container-fluid">
     		<a class="brand" href="/" style="color:#999;margin-top:0.4em;">guperf.appspot.com</a></p>
 	  		<ul class="nav pull-right">
-  				<li><a href="/">Dashboard</a></li>
-  				<li><a href="/log">Log</a></li>
-  				<li class="divider-vertical"></li>
+  				<li class="dropdown">
+  					<a class="dropdown-toggle" data-toggle="dropdown" href="#">Dashboards</a>
+  					<ul class="dropdown-menu">
+  						{% for dashboard in dashboards %}
+  						<li><a href="/dashboard/{{ dashboard.id }}">{{ dashboard.name }}</a></li>
+  						{% endfor %}
+  					</ul>
+  				</li>
+  				<li><a href="/admin/urls">Admin</a></li>
 	  		</ul>
     	</div>
   	</div>

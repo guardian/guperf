@@ -15,8 +15,12 @@ class DashboardHandler(webapp.RequestHandler):
 
         t = memcache.get("%s_dashboard_html" % dashboard)
 
+        context = {
+            'dashboards': models.Dashboard.all()
+        }
+
         if not t:
-            results = []
+            context['results'] = []
             urls = models.Url.all().filter('dashboard =', dashboard).order('-dashboard')
             if urls.count() < 1:
                 self.redirect('/dashboard')
@@ -34,15 +38,15 @@ class DashboardHandler(webapp.RequestHandler):
                     logging.info("There are no full results yet for %s" % url.url)
                     continue
 
-                results.append(result)
+                context['results'].append(result)
 
             # Cache the template until we flush the cache on new results.
             try:
                 logging.debug('trying')
-                t = template.render('templates/dashboard/%s.html' % dashboard, {'results': results})
+                t = template.render('templates/dashboard/%s.html' % dashboard, context)
             #except TemplateDoesNotExist:
             except:
-                t = template.render('templates/dashboard/default.html', {'results': results})
+                t = template.render('templates/dashboard/default.html', context)
             #memcache.set("%s_dashboard_html" % dashboard, t)
 
         self.response.out.write(t)
