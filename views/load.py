@@ -9,18 +9,25 @@ from google.appengine.api import memcache
 import models
 from perftest.requests import GooglePerfRequest, WptTestRunRequest, WptTestResultsRequest
 from perftest.tests import do_wpt_tests, get_wpt_results, do_google_tests
+from utils import get_messages, add_message
 
 class ScheduleHandler(webapp.RequestHandler):
 
-    def get(self):
+    def get(self, key=None):
         # Schedule all the URLs for test.
-        urls = models.Url.all()
+        if key:
+            urls = [models.Url.get(key)]
+        else:
+            urls = [model in models.Url.all()]
+
         for url in urls:
             test = models.UrlTestTask(url=url.url, name=url.name)
             test.put()
 
-        self.response.out.write('%s new jobs scheduled' % str(urls.count()))
-        self.response.out.write('<br>%s total jobs in the queue' % str(models.UrlTestTask.all().count()))
+        add_message('%s new jobs scheduled' % str(len(urls)))
+        add_message('%s total jobs in the queue' % str(models.UrlTestTask.all().count()))
+
+        return self.redirect('/admin/urls')
 
 class JobHandler(webapp.RequestHandler):
 
@@ -32,29 +39,26 @@ class JobHandler(webapp.RequestHandler):
 
     def get(self):
 
-        urls = models.UrlTestTask.all().order('-dt')[:2]
+        urls = models.UrlTestTask.all().order('-dt')
+        urls_to_test = urls[:2]
 
-        if (len(urls) > 0):    
+        if (urls.count() > 0):    
             context = {
-                'google_results': do_google_tests(urls, self.is_auto()),
-                'wpt_results': do_wpt_tests(urls, self.is_auto())
+                'google_results': do_google_tests(urls_to_test, self.is_auto()),
+                'wpt_results': do_wpt_tests(urls_to_test, self.is_auto())
             }
 
-            self.response.out.write(template.render('templates/loaded.html', context))
+            logging.info('%s tests started. %s remaining in queue.' % (len(urls_to_test), urls.count()))
+
+            self.response.out.write('%s new tests started.' % len(urls_to_test))
+            self.response.out.write('<br />%s tests remaining in queue.' % urls.count())
+
             for url in urls:
                 url.delete()
 
         else:
-            self.response.out.write('no jobs to run')
-
-class LogHandler(webapp.RequestHandler):
-    def get(self):
-
-        context = {
-            'tests': models.TestResult.all().order('-dt')[0:100]
-        }
-
-        self.response.out.write(template.render('templates/log.html', context))
+            logging.info('0 tests remaining in queue.')
+            self.response.out.write('no tests remaining in queue.')
 
 class ResultsHandler(webapp.RequestHandler):
     def get(self):
@@ -64,4 +68,6 @@ class ResultsHandler(webapp.RequestHandler):
         # Just bulk kill the cache.
         memcache.flush_all()
 
-        self.response.out.write("Worked" + str(dir(results)))
+        self.response.out.write('%s results collected.' % len(results))
+
+

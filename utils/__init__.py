@@ -1,10 +1,14 @@
 import httplib
-from urlparse import urlparse
+import datetime
 import logging
-
 import yaml
 import yaml.constructor
 from xml.dom import minidom
+from urlparse import urlparse
+
+from google.appengine.ext import db
+
+import models
 
 try:
     # included in standard lib from Python 2.7
@@ -92,5 +96,17 @@ class OrderedDictYAMLLoader(yaml.Loader):
             value = self.construct_object(value_node, deep=deep)
             mapping[key] = value
         return mapping
+
+def add_message(message):
+    m = models.UserMessage(body=message, dt=datetime.datetime.now())
+    m.put()
+
+def get_messages():
+    messages = models.UserMessage.all()
+    if messages.count() > 0:
+        m = [message.body for message in messages]
+        db.delete(messages)
+        return m
+    return None
 
 

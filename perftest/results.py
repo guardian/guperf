@@ -24,7 +24,6 @@ class ResultData(object):
             raise NoDataError
 
         self.url = url
-        self.id = url.replace(' ', '-')
         self.provider = provider
 
         self.tests = self.parse_raw_result_data()

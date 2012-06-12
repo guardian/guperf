@@ -45,7 +45,7 @@ def get_wpt_results():
 
     # Ping off a bunch of async requests.
     for test in unfulfilled_test_runs:
-        logging.info("Making wpt results request for %s" % test.url)
+        logging.debug("Making wpt results request for %s" % test.url)
         requests[test.url] = WptTestResultsRequest(test.provider_id)
 
     for url in requests:
@@ -60,7 +60,7 @@ def get_wpt_results():
                 testrun.put()
                 results.append(testrun)
         else:
-            logging.info("We tried to get results for %s, but no go." % url)
+            logging.debug("We tried to get results for %s, but no go." % url)
 
     return results
 

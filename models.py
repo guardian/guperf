@@ -26,3 +26,7 @@ class UrlTestTask(db.Expando):
 class Dashboard(db.Expando):
 	name = db.StringProperty(required=True)
 	id = db.StringProperty(required=True)
+
+class UserMessage(db.Expando):
+	body = db.TextProperty()
+	dt = db.DateTimeProperty()

@@ -2,9 +2,9 @@
 
 import logging
 
-from views.load import ScheduleHandler, JobHandler, ResultsHandler, LogHandler
+from views.load import ScheduleHandler, JobHandler, ResultsHandler
 from views.dashboard import DashboardHandler
-from views.management import StatusHandler, BetaStatusHandler
+from views.management import StatusHandler
 
 from google.appengine.ext import webapp
 from google.appengine.ext.webapp import util
@@ -13,12 +13,11 @@ def main():
 
     logging.getLogger().setLevel(logging.DEBUG)
     application = webapp.WSGIApplication([
+        ('/schedule/(.*)', ScheduleHandler),
         ('/schedule', ScheduleHandler),
         ('/dojob', JobHandler),
         ('/results', ResultsHandler),
-        ('/log', LogHandler),
         ('/management/status', StatusHandler),
-        ('/beta/management/status', BetaStatusHandler),
         ('/dashboard', DashboardHandler),
         ('/', DashboardHandler),
     ], debug=True)

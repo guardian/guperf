@@ -25,13 +25,14 @@ class DashboardHandler(webapp.RequestHandler):
             if urls.count() < 1:
                 self.redirect('/dashboard')
             for url in urls:
-                logging.debug(url.url)
+                logging.info('Getting data for %s' % url.name)
                 try:
                     result = {
                         'google': GoogleResultData(url.url),
                         'wpt': WptResultData(url.url),
                         'name': url.name,
-                        'url': url.url
+                        'url': url.url,
+                        'id': url.name.replace(' ', '-')
                     }
 
                 except NoDataError:
@@ -42,10 +43,10 @@ class DashboardHandler(webapp.RequestHandler):
 
             # Cache the template until we flush the cache on new results.
             try:
-                logging.debug('trying')
                 t = template.render('templates/dashboard/%s.html' % dashboard, context)
             #except TemplateDoesNotExist:
             except:
+                logging.debug('%s template not found. Falling back to default.html' % dashboard)
                 t = template.render('templates/dashboard/default.html', context)
             #memcache.set("%s_dashboard_html" % dashboard, t)
 
