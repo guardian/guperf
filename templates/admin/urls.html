@@ -37,7 +37,7 @@ table form {
 {% for url in urls %}
 <tr>
     <td>{{ url.name }}</td>
-    <td><a href="{{ url.url }}">{{ url.url }}</a></td>
+    <td><a href="{{ url.url }}">{{ url.display_url }}</a></td>
     <td><a href="/dashboard/{{ url.dashboard }}">{{ url.dashboard }}</a></td>
     <td><i class="icon-time"></i> <a href="/schedule/{{ url.key }}">Test</a></td>
     <td>

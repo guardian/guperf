@@ -18,6 +18,9 @@ class Url(db.Expando):
 	url = db.LinkProperty(required=True)
 	dashboard = db.StringProperty(required=True)
 
+	def display_url(self):
+		return self.url[:100]
+
 class UrlTestTask(db.Expando):
 	name = db.StringProperty()
 	url = db.StringProperty()
