@@ -48,7 +48,7 @@ class DashboardHandler(webapp.RequestHandler):
             except:
                 logging.debug('%s template not found. Falling back to default.html' % dashboard)
                 t = template.render('templates/dashboard/default.html', context)
-            #memcache.set("%s_dashboard_html" % dashboard, t)
+            memcache.set("%s_dashboard_html" % dashboard, t)
 
         self.response.out.write(t)
 

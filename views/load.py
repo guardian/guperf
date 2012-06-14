@@ -18,7 +18,7 @@ class ScheduleHandler(webapp.RequestHandler):
         if key:
             urls = [models.Url.get(key)]
         else:
-            urls = [model in models.Url.all()]
+            urls = [model for model in models.Url.all()]
 
         for url in urls:
             test = models.UrlTestTask(url=url.url, name=url.name)
@@ -53,7 +53,7 @@ class JobHandler(webapp.RequestHandler):
             self.response.out.write('%s new tests started.' % len(urls_to_test))
             self.response.out.write('<br />%s tests remaining in queue.' % urls.count())
 
-            for url in urls:
+            for url in urls_to_test:
                 url.delete()
 
         else:

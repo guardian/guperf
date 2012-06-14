@@ -38,7 +38,7 @@ def do_wpt_tests(urls, auto=False):
 
 def get_wpt_results():
 
-    unfulfilled_test_runs = models.TestResult.all().filter('results_received =', False).filter('provider =' ,'wpt')[:4]
+    unfulfilled_test_runs = models.TestResult.all().filter('results_received =', False).filter('provider =' ,'wpt').order('dt')[:4]
 
     requests = {}
     results = []
