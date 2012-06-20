@@ -45,22 +45,26 @@ def get_wpt_results():
 
     # Ping off a bunch of async requests.
     for test in unfulfilled_test_runs:
-        logging.debug("Making wpt results request for %s" % test.url)
+        logging.info("Making WPT results request for %s" % test.url)
         requests[test.url] = WptTestResultsRequest(test.provider_id)
 
     for url in requests:
+        logging.info("Checking WPT response for %s" % url)
         xml = requests[url].get_response()
         if xml is not None:
-            if xml.getElementsByTagName('statusCode')[0].childNodes[0].data == '200':
-                logging.debug('we got a good result for %s' % url)
+            status = xml.getElementsByTagName('statusCode')[0].childNodes[0].data
+            if status == '200':
+                logging.info('Got a good WPT test result for %s' % url)
                 unfulfilled_test_runs = models.TestResult.all().filter('results_received =', False).filter('provider =' ,'wpt')
                 testrun = unfulfilled_test_runs.filter('url =', url).fetch(1)[0]
                 testrun.result = xml.toxml()
                 testrun.results_received = True
                 testrun.put()
                 results.append(testrun)
+            else:
+                logging.info("WPT test not complete. Got statusCode: %s" % status)
         else:
-            logging.debug("We tried to get results for %s, but no go." % url)
+            logging.info("No XML was found." % url)
 
     return results
 

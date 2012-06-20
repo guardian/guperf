@@ -31,6 +31,12 @@ indexes:
   properties:
   - name: provider
   - name: results_received
+  - name: dt
+
+- kind: TestResult
+  properties:
+  - name: provider
+  - name: results_received
   - name: url
   - name: dt
 
@@ -48,9 +54,3 @@ indexes:
   - name: url
   - name: dt
     direction: desc
-
-- kind: TestResult
-  properties:
-  - name: provider
-  - name: results_received
-  - name: dt
