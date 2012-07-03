@@ -13,6 +13,12 @@ from utils import get_messages, add_message
 
 class ScheduleHandler(webapp.RequestHandler):
 
+    def is_auto(self):
+        auto = self.request.get('auto', False)
+        if auto is not False:
+            auto = True
+        return auto
+
     def get(self, key=None):
         # Schedule all the URLs for test.
         if key:
@@ -24,8 +30,9 @@ class ScheduleHandler(webapp.RequestHandler):
             test = models.UrlTestTask(url=url.url, name=url.name)
             test.put()
 
-        add_message('%s new jobs scheduled' % str(len(urls)))
-        add_message('%s total jobs in the queue' % str(models.UrlTestTask.all().count()))
+        if not self.is_auto():
+            add_message('%s new jobs scheduled' % len(urls))
+            add_message('%s total jobs in the queue' % models.UrlTestTask.all().count())
 
         return self.redirect('/admin/urls')
 

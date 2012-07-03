@@ -74,6 +74,9 @@ class WptResultData(ResultData):
     def parse_raw_result_data(self):
         parsed = []
         for test in self.tests:
-            test._result = xml_to_json(test.result)
-            parsed.append(test)
+            try:
+                test._result = xml_to_json(test.result)
+                parsed.append(test)
+            except:
+                logging.debug("Parsing XML failed for ID: %s", test.key())
         return parsed

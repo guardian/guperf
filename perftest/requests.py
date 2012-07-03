@@ -48,8 +48,11 @@ class GooglePerfRequest(PerfRequest):
 class WptTestRunRequest(PerfRequest):
 
 	def build_url(self):
+		wpt_location = settings.wpt_location
+		if "wpt_mobile=true" in self.url_to_test:
+			wpt_location = settings.wpt_android_location
 		return '%s?url=%s&private=1&f=xml&runs=%s&location=%s.%s&noimages=1' % (settings.wpt_url, self.url_to_test,
-			settings.wpt_runs, settings.wpt_location, settings.wpt_connectivity)
+			settings.wpt_runs, wpt_location, settings.wpt_connectivity)
 		#return 'http://localhost:8888/runtest.xml'
 
 

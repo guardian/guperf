@@ -43,7 +43,7 @@ def xml_to_json(result):
                 if len(child.childNodes) > 1:
                     if child.nodeName == 'run':
                         runs.append(parse_xml(child))
-                        if len(runs) == 3:
+                        if len(runs) == 10:
                             data['runs'] = runs
                     else:
                         data[child.nodeName] = parse_xml(child)
